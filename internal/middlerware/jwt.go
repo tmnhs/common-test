@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/tmnhs/common-test/internal/model/resp"
+	"github.com/tmnhs/common"
 	"github.com/tmnhs/common/logger"
 	"golang.org/x/sync/singleflight"
 	"time"
@@ -128,7 +128,7 @@ func JWTAuth() gin.HandlerFunc {
 		//You can agree to refresh the token or log in again.
 		token := c.Request.Header.Get("Authorization")
 		if token == "" {
-			resp.FailWithDetailed(resp.ERROR, gin.H{"reload": true}, "未登录或非法访问", c)
+			common.FailWithDetailed(common.ERROR, gin.H{"reload": true}, "未登录或非法访问", c)
 			c.Abort()
 			return
 		}
@@ -136,11 +136,11 @@ func JWTAuth() gin.HandlerFunc {
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
-				resp.FailWithDetailed(resp.ERROR, gin.H{"reload": true}, "授权已过期", c)
+				common.FailWithDetailed(common.ERROR, gin.H{"reload": true}, "授权已过期", c)
 				c.Abort()
 				return
 			}
-			resp.FailWithDetailed(resp.ERROR, gin.H{"reload": true}, err.Error(), c)
+			common.FailWithDetailed(common.ERROR, gin.H{"reload": true}, err.Error(), c)
 			c.Abort()
 			return
 		}

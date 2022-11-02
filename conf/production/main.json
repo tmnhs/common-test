@@ -3,7 +3,7 @@
     "path": "127.0.0.1",
     "port": "3306",
     "config": "charset=utf8mb4&parseTime=True&loc=Local",
-    "db-name": "crony",
+    "db-name": "common-test",
     "username": "root",
     "password": "root",
     "max-idle-conns": 100,
@@ -11,18 +11,15 @@
     "log-mode": "warn",
     "log-zap": false
   },
+  "redis": {
+    "addr": "114.55.178.217:6379",
+    "password": "",
+    "db": 0
+  },
   "system": {
     "env": "testing",
     "addr": 8089,
-    "#node-timeout": "Node registration timeout, in seconds",
-    "node-ttl": 5,
-    "#job-proc-ttl": "The unit is second",
-    "job-proc-ttl": 300,
-    "#log-clean-period":"The unit is minute. By default, it is cleared twice a day",
-    "log-clean-period":720,
-    "log-clean-expiration":604800,
-    "#cmd-auto-allocation": "Whether the cmd command is used to automatically allocate nodes. By default, the command is not supported. If the command is used, ensure that each node has the corresponding configuration",
-    "cmd-auto-allocation":false
+    "version": "v1.0.2"
   },
   "etcd": {
     "endpoints":[
@@ -35,17 +32,18 @@
   },
   "email": {
     "port": 465,
-    "from": "from",
+    "from": "test@qq.com",
     "host": "smtp.qq.com",
     "is-ssl": true,
-    "secret": "secret",
-    "nickname": "crony定时任务平台",
-    "#to": "Email default notification object",
-    "to": ["test@qq.com"]
+    "secret": "test",
+    "nickname": "common-test",
+    "to": [
+      "test@test.mobi"
+    ]
   },
   "webhook": {
     "url": "url",
-    "kind": ""
+    "kind": "feishu"
   },
   "log": {
     "level": "warn",

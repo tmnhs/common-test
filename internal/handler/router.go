@@ -3,11 +3,9 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/tmnhs/common-test/internal/middlerware"
-	"github.com/tmnhs/common-test/internal/model/resp"
 )
 
 func RegisterRouters(r *gin.Engine) {
-	r.Use(middlerware.Cors())
 
 	configRoute(r)
 
@@ -21,20 +19,23 @@ func configRoute(r *gin.Engine) {
 		hello.GET("", func(c *gin.Context) {
 			c.JSON(200, "pong")
 		})
-		hello.POST("", func(c *gin.Context) {
-			type Hello struct {
-				Name string `json:"name" form:"name"`
-			}
-			var h Hello
-			var err error
-			err = c.ShouldBindJSON(&h)
-			if err != nil {
-				c.JSON(resp.ERROR, err.Error())
-			}
-			c.JSON(200, "hello,"+h.Name)
-		})
 	}
 
+	base := r.Group("")
+	{
+		base.POST("register", defaultUserRouter.Register)
+		base.POST("login", defaultUserRouter.Login)
+	}
+
+	user := r.Group("/user")
+	user.Use(middlerware.JWTAuth())
+	{
+		user.POST("del", defaultUserRouter.Delete)
+		user.POST("update", defaultUserRouter.Update)
+		user.POST("change_pw", defaultUserRouter.ChangePassword)
+		user.GET("find", defaultUserRouter.FindById)
+		user.POST("search", defaultUserRouter.Search)
+	}
 }
 
 func configNoRoute(r *gin.Engine) {
