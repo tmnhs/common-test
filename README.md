@@ -5,6 +5,7 @@
 <img src="https://img.shields.io/badge/gorm-1.23.10-red"/>
 <img src="https://img.shields.io/badge/etcd-3.5-red"/>
 </div>
+
 > common包的示例用法，使用github.com/tmnhs/common包快速的搭建一个web服务，
 
 ## 1. 使用方法
