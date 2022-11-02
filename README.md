@@ -18,7 +18,7 @@ make
 
 运行成功后可以访问浏览器http://localhost:8089/ping
 
-若得到$pong$,则说明服务启动成功,之后便可以进行**二次开发**了
+若得到”pong“,则说明服务启动成功,之后便可以进行**二次开发**了
 
 ## 二次开发
 
@@ -26,7 +26,7 @@ make
 
 ```go
 func main() {
-  	//参数为需要启动的服务(etcd/mysql/redis)
+    //参数为需要启动的服务(etcd/mysql/redis) 
     //连接成功后可以通过dbclient.GetMysqlDD(),etcdClient.GetEtcd(),redisclient.GetRedis()获取对应的client
     //通过logger.GetLogger()获取日志处理器
     //通过common.GetConfigModels()获取配置文件的信息
@@ -60,7 +60,7 @@ func main() {
 | cmd         | 入口函数                   |
 | conf        | 配置文件目录                 |
 | internal    | 业务逻辑目录                 |
-| haddler     | 路由                     |
+| haddler     | 路由处理                     |
 | middlerware | 中间件                    |
 | model       | 结构体（请求/数据库）            |
 | service     | 一些业务逻辑服务               |
