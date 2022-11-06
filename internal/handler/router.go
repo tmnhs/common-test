@@ -36,6 +36,12 @@ func configRoute(r *gin.Engine) {
 		user.GET("find", defaultUserRouter.FindById)
 		user.POST("search", defaultUserRouter.Search)
 	}
+	upload := r.Group("/file")
+	//upload.Use(middlerware.JWTAuth())
+	{
+		upload.POST("del", defaultUploadRouter.DeleteFile)
+		upload.POST("upload", defaultUploadRouter.UploadFile)
+	}
 }
 
 func configNoRoute(r *gin.Engine) {
