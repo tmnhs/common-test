@@ -21,7 +21,7 @@ func RegisterTables(db *gorm.DB) error {
 		{UserName: "root", Password: "e10adc3949ba59abbe56e057f20f883e", Role: model.RoleAdmin, Email: "333333333@qq.com"},
 	}
 	if exist := checkDataExist(db); !exist {
-		if err := db.Table(model.CronyUserTableName).Create(&entities).Error; err != nil {
+		if err := db.Table(model.CommonUserTableName).Create(&entities).Error; err != nil {
 			return errors.Wrap(err, "Failed to initialize table data")
 		}
 	}
@@ -30,7 +30,7 @@ func RegisterTables(db *gorm.DB) error {
 }
 
 func checkDataExist(db *gorm.DB) bool {
-	if errors.Is(db.Table(model.CronyUserTableName).Where("username = ?", "root").First(&model.User{}).Error, gorm.ErrRecordNotFound) { // 判断是否存在数据
+	if errors.Is(db.Table(model.CommonUserTableName).Where("username = ?", "root").First(&model.User{}).Error, gorm.ErrRecordNotFound) { // 判断是否存在数据
 		return false
 	}
 	return true

@@ -19,6 +19,7 @@ type UserRouter struct {
 
 var defaultUserRouter = new(UserRouter)
 
+//fixme 按照实际项目需求修改
 func (u *UserRouter) Login(c *gin.Context) {
 	var req request.ReqUserLogin
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -144,12 +145,16 @@ func (u *UserRouter) FindById(c *gin.Context) {
 	}
 	userModel := model.User{ID: req.ID}
 	err := userModel.FindById()
-	if err != nil {
-		logger.GetLogger().Error(fmt.Sprintf("[find_user] db  error:%v", err))
-		common.FailWithMessage(common.ERROR, "[find_user] db  error", c)
+	if err == nil {
+		common.OkWithDetailed(userModel, "find success", c)
 		return
 	}
-	common.OkWithDetailed(userModel, "find success", c)
+	if err == model.ErrorUserNotExist {
+		common.FailWithMessage(common.ERROR, "[find_user] user not exist", c)
+	} else {
+		logger.GetLogger().Error(fmt.Sprintf("[find_user] db  error:%v", err))
+		common.FailWithMessage(common.ERROR, "[find_user] db  error", c)
+	}
 }
 
 func (u *UserRouter) Search(c *gin.Context) {

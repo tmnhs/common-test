@@ -16,13 +16,13 @@ var DefaultUserService = new(UserService)
 func (us *UserService) Login(username, password string) (u *model.User, err error) {
 	u = new(model.User)
 	//返回没有密码的用户信息
-	err = dbclient.GetMysqlDB().Select("id", "username", "email", "role", "created", "updated").Table(model.CronyUserTableName).Where("username = ? And password = ?", username, utils.MD5(password)).Find(u).Error
+	err = dbclient.GetMysqlDB().Select("id", "username", "email", "role", "created", "updated").Table(model.CommonUserTableName).Where("username = ? And password = ?", username, utils.MD5(password)).Find(u).Error
 	return
 }
 
 func (us *UserService) FindByUserName(username string) (u *model.User, err error) {
 	u = new(model.User)
-	err = dbclient.GetMysqlDB().Table(model.CronyUserTableName).Where("username = ? ", username).First(u).Error
+	err = dbclient.GetMysqlDB().Table(model.CommonUserTableName).Where("username = ? ", username).First(u).Error
 	if err == gorm.ErrRecordNotFound {
 		return nil, nil
 	}
@@ -30,11 +30,11 @@ func (us *UserService) FindByUserName(username string) (u *model.User, err error
 }
 
 func (us *UserService) ChangePassword(userId int, oldPassword, newPassword string) error {
-	return dbclient.GetMysqlDB().Table(model.CronyUserTableName).Where("id = ? And password =? ", userId, utils.MD5(oldPassword)).Update("password", utils.MD5(newPassword)).Error
+	return dbclient.GetMysqlDB().Table(model.CommonUserTableName).Where("id = ? And password =? ", userId, utils.MD5(oldPassword)).Update("password", utils.MD5(newPassword)).Error
 }
 
 func (us *UserService) Search(s *request.ReqUserSearch) ([]model.User, int64, error) {
-	db := dbclient.GetMysqlDB().Table(model.CronyUserTableName)
+	db := dbclient.GetMysqlDB().Table(model.CommonUserTableName)
 	if len(s.UserName) > 0 {
 		db = db.Where("username like ?", s.UserName+"%")
 	}
